@@ -1,7 +1,12 @@
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <vector>
+#include <map>
+#include <algorithm>
 #include <cmath>
+#include <cctype>
+#include <sstream>
 
 using namespace std;
 
@@ -18,8 +23,21 @@ double calculateCosineSimilarity() {
 }
 
 // 读取文件内容
-string readFile() {
-    return temp;
+string readFile(const string& filePath) {
+    ifstream file(filePath, ios::in | ios::binary);
+    if (!file.is_open()) {
+        cerr << "错误：无法打开文件 '" << filePath << "'，请检查路径是否正确。" << endl;
+        exit(1);
+    }
+
+    string content;
+    string line;
+    while (getline(file, line)) {
+        content += line + "\n";
+    }
+
+    file.close();
+    return content;
 }
 
 // 写入结果到文件
@@ -38,10 +56,18 @@ int main(int argc, char* argv[]) {
     else {
         cerr << "开始进行查重率计算" << endl;
     }
+
+    // 从命令行参数获取路径
+    string origPath = argv[1];
+    string copyPath = argv[2];
+    string outputPath = argv[3];
   
     // 读取文件内容
-    string origText = readFile();
-    string copyText = readFile();
+    string origText = readFile(origPath);
+    string copyText = readFile(copyPath);
+
+    cerr << origText << endl;
+    cerr << copyText << endl;
 
     // 预处理文本
     string processedOrig = preprocessText();
