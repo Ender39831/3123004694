@@ -14,7 +14,7 @@ using namespace std;
 string preprocessText(const string& text) {
     string result;
     for (size_t i = 0; i < text.size();) {
-        // 处理UTF-8汉字（3字节）
+        // 处理UTF-8汉字
         if ((unsigned char)text[i] >= 0xE0 && i + 2 < text.size()) {
             result += text.substr(i, 3);
             i += 3;
@@ -43,13 +43,13 @@ vector<string> splitText(const string& text) {
     string currentWord;
 
     for (size_t i = 0; i < text.size();) {
-        // 判断是否为汉字
+        // 判断是否为汉字（UTF-8编码的汉字占3个字节）
         if ((unsigned char)text[i] >= 0xE0 && i + 2 < text.size()) {
             string chineseChar = text.substr(i, 3);
             tokens.push_back(chineseChar);
             i += 3;
         }
-        // 处理空格（作为英文单词的分隔符）
+        // 处理空格（英文单词的分隔符）
         else if (text[i] == ' ') {
             if (!currentWord.empty()) {
                 tokens.push_back(currentWord);
@@ -81,7 +81,7 @@ map<string, int> calculateWordFrequency(const vector<string>& words) {
     return freq;
 }
 
-// 计算余弦相似度
+// 采用余弦相似度计算
 double calculateCosineSimilarity(const map<string, int>& origFreq, const map<string, int>& copyFreq) {
     // 收集所有唯一词
     map<string, bool> allWords;
@@ -137,11 +137,26 @@ string readFile(const string& filePath) {
     return content;
 }
 
+// 写入结果到文件
+void writeResult(const string& filePath, double similarityPercent) {
+    ofstream file(filePath);
+    if (!file.is_open()) {
+        cerr << "错误：无法创建输出文件 '" << filePath << "'，请检查路径是否正确。" << endl;
+        exit(1);
+    }
+
+    // 写入百分比格式，保留两位小数
+    file.precision(2);
+    file << fixed << similarityPercent << "%" << endl;
+
+    file.close();
+}
+
 int main(int argc, char* argv[]) {
     // 检查参数
     if (argc != 4) {
         cerr << "参数错误：请提供3个文件路径参数" << endl;
-        cerr << "正确用法：原文文件路径 抄袭版论文路径 输出结果路径" << endl;
+        cerr << "正确用法：程序名 原文文件路径 抄袭版论文路径 输出结果路径" << endl;
         return 1;
     }
 
@@ -188,13 +203,17 @@ int main(int argc, char* argv[]) {
     for (const auto& pair : copyFreq) cerr << pair.first << ":" << pair.second << " ";
     cerr << endl;
 
-    // 计算相似度
+    // 计算相似度同时转换为百分比
     double similarity = calculateCosineSimilarity(origFreq, copyFreq);
-    double similarityPercent = similarity * 100; 
+    double similarityPercent = similarity * 100;
 
-    // 输出结果（保留两位小数）
+    // 输出结果
     cout.precision(2);
-    cout << fixed << similarity << endl;
     cout << fixed << similarityPercent << "%" << endl;
+
+    // 写入结果到文件
+    writeResult(outputPath, similarityPercent);
+    cerr << "处理完成！重复率结果已保存至: " << outputPath << endl;
+
     return 0;
 }
