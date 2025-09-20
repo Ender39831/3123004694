@@ -2,15 +2,18 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>  // 哈希表替代map
+#include <unordered_set>  // 哈希集合替代map
 #include <algorithm>
 #include <cmath>
 #include <cctype>
 #include <sstream>
+#include <chrono>
 
 using namespace std;
+using namespace chrono;
 
-// 文本预处理：去除标点符号，保留汉字、字母、数字
+// 文本预处理
 string preprocessText(const string& text) {
     string result;
     for (size_t i = 0; i < text.size();) {
@@ -37,7 +40,7 @@ string preprocessText(const string& text) {
     return result;
 }
 
-// 分词：对中文按单个字符分割，对英文按空格分割
+// 分词
 vector<string> splitText(const string& text) {
     vector<string> tokens;
     string currentWord;
@@ -49,7 +52,7 @@ vector<string> splitText(const string& text) {
             tokens.push_back(chineseChar);
             i += 3;
         }
-        // 处理空格（英文单词的分隔符）
+        // 处理空格（作为英文单词的分隔符）
         else if (text[i] == ' ') {
             if (!currentWord.empty()) {
                 tokens.push_back(currentWord);
@@ -72,29 +75,29 @@ vector<string> splitText(const string& text) {
     return tokens;
 }
 
-// 计算词频
-map<string, int> calculateWordFrequency(const vector<string>& words) {
-    map<string, int> freq;
+// 计算词频：使用unordered_map替代map
+unordered_map<string, int> calculateWordFrequency(const vector<string>& words) {
+    unordered_map<string, int> freq;
     for (const string& word : words) {
         freq[word]++;
     }
     return freq;
 }
 
-// 采用余弦相似度计算
-double calculateCosineSimilarity(const map<string, int>& origFreq, const map<string, int>& copyFreq) {
-    // 收集所有唯一词
-    map<string, bool> allWords;
-    for (const auto& pair : origFreq) allWords[pair.first] = true;
-    for (const auto& pair : copyFreq) allWords[pair.first] = true;
+// 计算余弦相似度：使用unordered_set替代map
+double calculateCosineSimilarity(const unordered_map<string, int>& origFreq,
+    const unordered_map<string, int>& copyFreq) {
+    // 用哈希集合收集所有词
+    unordered_set<string> allWords;
+    for (const auto& pair : origFreq) allWords.insert(pair.first);
+    for (const auto& pair : copyFreq) allWords.insert(pair.first);
 
     // 计算分子：点积
     double dotProduct = 0.0;
     // 计算两个向量的模长
     double origMagnitude = 0.0, copyMagnitude = 0.0;
 
-    for (const auto& pair : allWords) {
-        const string& word = pair.first;
+    for (const string& word : allWords) {
         int origCount = 0, copyCount = 0;
 
         auto origIt = origFreq.find(word);
@@ -126,12 +129,10 @@ string readFile(const string& filePath) {
     }
 
     string content;
-    char buffer[1024];
-    while (file.read(buffer, sizeof(buffer))) {
-        content.append(buffer, sizeof(buffer));
+    string line;
+    while (getline(file, line)) {
+        content += line + "\n";
     }
-    // 读取剩余内容
-    content.append(buffer, file.gcount());
 
     file.close();
     return content;
@@ -156,9 +157,12 @@ int main(int argc, char* argv[]) {
     // 检查参数
     if (argc != 4) {
         cerr << "参数错误：请提供3个文件路径参数" << endl;
-        cerr << "正确用法：程序名 原文文件路径 抄袭版论文路径 输出结果路径" << endl;
+        cerr << "正确用法：原文文件路径 抄袭版论文路径 输出结果路径" << endl;
         return 1;
     }
+
+    // 记录开始时间点
+    auto startTime = high_resolution_clock::now();
 
     // 从命令行参数获取路径
     string origPath = argv[1];
@@ -169,51 +173,62 @@ int main(int argc, char* argv[]) {
     string origText = readFile(origPath);
     string copyText = readFile(copyPath);
 
-    // 调试输出：查看原始内容
-    cerr << "=== 原文内容 ===" << endl << origText << endl;
-    cerr << "=== 抄袭版内容 ===" << endl << copyText << endl;
+    // 调试输出
+    //cerr << "=== 原文内容 ===" << endl << origText << endl;
+    //cerr << "=== 抄袭版内容 ===" << endl << copyText << endl;
 
     // 预处理文本
     string processedOrig = preprocessText(origText);
     string processedCopy = preprocessText(copyText);
 
-    // 调试输出：查看预处理结果
-    cerr << "=== 预处理后原文 ===" << endl << processedOrig << endl;
-    cerr << "=== 预处理后抄袭版 ===" << endl << processedCopy << endl;
+    // 调试输出
+    //cerr << "=== 预处理后原文 ===" << endl << processedOrig << endl;
+    //cerr << "=== 预处理后抄袭版 ===" << endl << processedCopy << endl;
 
     // 分词
     vector<string> origWords = splitText(processedOrig);
     vector<string> copyWords = splitText(processedCopy);
 
-    // 调试输出：查看分词结果
+    // 调试输出
+    /*
     cerr << "=== 原文分词结果 ===" << endl;
     for (const auto& word : origWords) cerr << word << "|";
     cerr << endl << "=== 抄袭版分词结果 ===" << endl;
     for (const auto& word : copyWords) cerr << word << "|";
     cerr << endl;
+    */
 
     // 计算词频
-    map<string, int> origFreq = calculateWordFrequency(origWords);
-    map<string, int> copyFreq = calculateWordFrequency(copyWords);
+    auto origFreq = calculateWordFrequency(origWords);
+    auto copyFreq = calculateWordFrequency(copyWords);
 
-    // 调试输出：查看词频
+    // 调试输出：
+    /*
     cerr << "=== 原文词频 ===" << endl;
     for (const auto& pair : origFreq) cerr << pair.first << ":" << pair.second << " ";
     cerr << endl << "=== 抄袭版词频 ===" << endl;
     for (const auto& pair : copyFreq) cerr << pair.first << ":" << pair.second << " ";
     cerr << endl;
+    */
 
-    // 计算相似度同时转换为百分比
+    // 计算相似度
     double similarity = calculateCosineSimilarity(origFreq, copyFreq);
     double similarityPercent = similarity * 100;
 
-    // 输出结果
+    // 控制台输出结果
     cout.precision(2);
     cout << fixed << similarityPercent << "%" << endl;
 
     // 写入结果到文件
     writeResult(outputPath, similarityPercent);
+
+    // 记录结束时间点并计算耗时
+    auto endTime = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(endTime - startTime);
+
+    // 输出耗时信息
     cerr << "处理完成！重复率结果已保存至: " << outputPath << endl;
+    cerr << "本次查重总耗时: " << duration.count() << " 毫秒" << endl;
 
     return 0;
 }
