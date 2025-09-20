@@ -1,0 +1,4 @@
+﻿  main.cpp
+I:\StoreVS2022\PlagiarismDetectionOfPapers\3123004694\PlagiarismDetectionOfPapers\PlagiarismDetectionOfPapers\main.cpp(117,17): warning C4129: “o：: 不可识别的字符转义序列
+I:\StoreVS2022\PlagiarismDetectionOfPapers\3123004694\PlagiarismDetectionOfPapers\PlagiarismDetectionOfPapers\main.cpp(117,17): warning C4129: “c：: 不可识别的字符转义序列
+  PlagiarismDetectionOfPapers.vcxproj -> I:\StoreVS2022\PlagiarismDetectionOfPapers\3123004694\PlagiarismDetectionOfPapers\x64\Debug\PlagiarismDetectionOfPapers.exe

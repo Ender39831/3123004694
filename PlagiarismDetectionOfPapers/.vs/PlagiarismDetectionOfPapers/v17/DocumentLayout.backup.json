@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "I:\\StoreVS2022\\PlagiarismDetectionOfPapers\\3123004694\\PlagiarismDetectionOfPapers\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4EF8B4C7-7104-4587-8462-DB7C0949B270}|Plagiarism detection of papers\\Plagiarism detection of papers.vcxproj|I:\\StoreVS2022\\PlagiarismDetectionOfPapers\\3123004694\\PlagiarismDetectionOfPapers\\Plagiarism detection of papers\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{4EF8B4C7-7104-4587-8462-DB7C0949B270}|Plagiarism detection of papers\\Plagiarism detection of papers.vcxproj|solutionrelative:Plagiarism detection of papers\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{812791E7-CE1D-4461-A772-55F685D6C581}|PlagiarismDetectionOfPapers\\PlagiarismDetectionOfPapers.vcxproj|I:\\StoreVS2022\\PlagiarismDetectionOfPapers\\3123004694\\PlagiarismDetectionOfPapers\\PlagiarismDetectionOfPapers\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{812791E7-CE1D-4461-A772-55F685D6C581}|PlagiarismDetectionOfPapers\\PlagiarismDetectionOfPapers.vcxproj|solutionrelative:PlagiarismDetectionOfPapers\\main.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,13 +20,13 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "main.cpp",
-              "DocumentMoniker": "I:\\StoreVS2022\\PlagiarismDetectionOfPapers\\3123004694\\PlagiarismDetectionOfPapers\\Plagiarism detection of papers\\main.cpp",
-              "RelativeDocumentMoniker": "Plagiarism detection of papers\\main.cpp",
-              "ToolTip": "I:\\StoreVS2022\\PlagiarismDetectionOfPapers\\3123004694\\PlagiarismDetectionOfPapers\\Plagiarism detection of papers\\main.cpp",
-              "RelativeToolTip": "Plagiarism detection of papers\\main.cpp",
-              "ViewState": "AgIAAC8AAAAAAAAAAAAswEIAAAApAAAAAAAAAA==",
+              "DocumentMoniker": "I:\\StoreVS2022\\PlagiarismDetectionOfPapers\\3123004694\\PlagiarismDetectionOfPapers\\PlagiarismDetectionOfPapers\\main.cpp",
+              "RelativeDocumentMoniker": "PlagiarismDetectionOfPapers\\main.cpp",
+              "ToolTip": "I:\\StoreVS2022\\PlagiarismDetectionOfPapers\\3123004694\\PlagiarismDetectionOfPapers\\PlagiarismDetectionOfPapers\\main.cpp",
+              "RelativeToolTip": "PlagiarismDetectionOfPapers\\main.cpp",
+              "ViewState": "AgIAAIsAAAAAAAAAAAAuwIYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-09-19T11:15:23.148Z",
+              "WhenOpened": "2025-09-20T12:34:06.247Z",
               "EditorCaption": ""
             }
           ]
